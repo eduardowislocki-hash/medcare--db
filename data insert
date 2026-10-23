@@ -8,5 +8,7 @@ select
 from
 	medicos
 
-join
+	join
 	especialidades on especialidades.id = medicos.especialidade_id
+
+order by medicos.valor_consulta DESC
