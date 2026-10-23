@@ -1,0 +1,12 @@
+select
+	medicos.nome,
+	medicos.valor_consulta,
+	medicos.crm,
+	especialidades.nome
+
+
+from
+	medicos
+
+join
+	especialidades on especialidades.id = medicos.especialidade_id
