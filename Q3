@@ -1,0 +1,13 @@
+SELECT 
+    c.id AS consulta_id,
+    p.nome AS paciente,
+    m.nome AS medico,
+    m.valor_consulta,
+    COALESCE(SUM(ex.valor_exame), 0.00) AS total_exames,
+    (m.valor_consulta + COALESCE(SUM(ex.valor_exame), 0.00)) AS valor_total_atendimento
+FROM consultas c
+INNER JOIN pacientes p ON c.paciente_id = p.id
+INNER JOIN medicos m ON c.medico_id = m.id
+LEFT JOIN exames_consulta ex ON c.id = ex.consulta_id
+GROUP BY c.id, p.nome, m.nome, m.valor_consulta
+ORDER BY c.id;
