@@ -1,0 +1,30 @@
+INSERT INTO especialidades (nome) VALUES 
+('Cardiologia'),
+('Pediatria'),
+('Dermatologia');
+
+
+INSERT INTO medicos (especialidade_id, nome, crm, valor_consulta) VALUES 
+(1, 'Dra. Carla Mendes', 'CRM/SP 123456', 350.00),
+(2, 'Dr. Roberto Alves', 'CRM/SP 654321', 250.00),
+(3, 'Dra. Juliana Lima', 'CRM/SP 789123', 300.00);
+
+
+INSERT INTO pacientes (nome, email, cpf, data_nascimento) VALUES 
+('Carlos Silva', 'carlos.silva@email.com', '11122233344', '1985-05-12'),
+('Mariana Costa', 'mariana.costa@email.com', '55566677788', '2010-08-25'),
+('Lucas Pereira', 'lucas.pereira@email.com', '99900011122', '1998-11-03');
+
+
+INSERT INTO consultas (medico_id, paciente_id, data_hora, status) VALUES 
+(1, 1, '2026-03-10 09:00:00', 'Realizada'), -- Consulta 1 (Carlos com Dra. Carla)
+(1, 3, '2026-03-10 10:30:00', 'Realizada'), -- Consulta 2 (Lucas com Dra. Carla)
+(2, 2, '2026-03-11 14:00:00', 'Realizada'), -- Consulta 3 (Mariana com Dr. Roberto)
+(3, 1, '2026-03-12 11:00:00', 'Agendada');  -- Consulta 4 (Carlos com Dra. Juliana)
+
+
+INSERT INTO exames_consulta (consulta_id, nome_exame, valor_exame) VALUES 
+(1, 'Eletrocardiograma', 120.00),
+(1, 'Ecocardiograma', 250.00),
+(2, 'Hemograma Completo', 45.00),
+(3, 'Exame de Urina', 30.00);
