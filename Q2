@@ -1,0 +1,13 @@
+SELECT
+	c.id,
+	p.nome AS Paciente,
+	c.data_hora,
+	m.nome AS medico,
+	e.nome as especialidade,
+	c.status
+
+FROM consultas c
+JOIN medicos m on m.id = c.medico_id
+JOIN pacientes p on c.paciente_id = p.id
+JOIN especialidades e on e.id = m.especialidade_id
+WHERE p.nome = 'Carlos Silva'
