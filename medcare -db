@@ -1,54 +1,58 @@
-create table paciente(
-	id serial primary key,
-	nome varchar (150) not null,
-	email varchar (150) not null unique,
-	cpf varchar (11) not null unique,
-	data_nascimento varchar (20) not null,
-	data_cadastro timestamp default current_timestamp
+CREATE TABLE pacientes (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    cpf VARCHAR(11) UNIQUE NOT NULL,
+    data_nascimento DATE NOT NULL,
+    data_cadastro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE especialidades (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(50) UNIQUE NOT NULL
 );
 
 
-create table especialidades(
-	id serial primary key,
-	nome varchar (150) not null
-	
+CREATE TABLE medicos (
+    id SERIAL PRIMARY KEY,
+    especialidade_id INT NOT NULL,
+    nome VARCHAR(100) NOT NULL,
+    crm VARCHAR(20) UNIQUE NOT NULL,
+    valor_consulta NUMERIC(10, 2) NOT NULL CHECK (valor_consulta > 0),
+    
+    CONSTRAINT fk_medico_especialidade 
+        FOREIGN KEY (especialidade_id) 
+        REFERENCES especialidades(id) 
+        ON DELETE RESTRICT
 );
 
 
-create table medicos(
-	id serial primary key,
-	especialidade_id int,
-	nome varchar(150) not null,
-	crm varchar (20) not null unique,
-	valor_consulta numeric (10, 2) default 0.00,
-
-	foreign key(especialidade_id) references especialidades (id)
-	
+CREATE TABLE consultas (
+    id SERIAL PRIMARY KEY,
+    medico_id INT NOT NULL,
+    paciente_id INT NOT NULL,
+    data_hora TIMESTAMP NOT NULL,
+    status VARCHAR(20) DEFAULT 'Agendada' CHECK (status IN ('Agendada', 'Realizada', 'Cancelada')),
+    
+    CONSTRAINT fk_consulta_medico 
+        FOREIGN KEY (medico_id) 
+        REFERENCES medicos(id) 
+        ON DELETE RESTRICT,
+    CONSTRAINT fk_consulta_paciente 
+        FOREIGN KEY (paciente_id) 
+        REFERENCES pacientes(id) 
+        ON DELETE CASCADE
 );
 
 
-create table consultas(
-	id serial primary key,
-	medico_id int, 
-	paciente_id int,
-	data_hora varchar (20),
-	status varchar (20) default 'agendada' check (status IN ('Agendada', 'Realizada', 'Cancelada')),
-
-	foreign key (medico_id) references medicos (id),
-	foreign key (paciente_id) references paciente (id)
-	
-
-	
-);
-
-
-create table exames_consulta(
-	id serial primary key,
-	consulta_id int not null,
-	nome_exame varchar (100) not null,
-	valor_exame numeric (10, 2) not null check (valor_exame >= 0),
-
-	foreign key (consulta_id)
-	references consultas (id)
-	On delete cascade
+CREATE TABLE exames_consulta (
+    id SERIAL PRIMARY KEY,
+    consulta_id INT NOT NULL,
+    nome_exame VARCHAR(100) NOT NULL,
+    valor_exame NUMERIC(10, 2) NOT NULL CHECK (valor_exame >= 0),
+    
+    CONSTRAINT fk_exame_consulta 
+        FOREIGN KEY (consulta_id) 
+        REFERENCES consultas(id) 
+        ON DELETE CASCADE
 );
